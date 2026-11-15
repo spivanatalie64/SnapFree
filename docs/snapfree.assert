@@ -1,0 +1,4 @@
+type: account-key
+authority-id: snapfree
+account-id: snapfree
+public-key-sha3-384: PLACEHOLDER_WILL_BE_REPLACED_BY_GPG_EXPORT

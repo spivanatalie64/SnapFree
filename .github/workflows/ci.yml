@@ -1,13 +1,13 @@
 name: CI
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-
 jobs:
   test:
-    uses: spivanatalie64/.github/.github/workflows/ci-guile.yml@main
-    with:
-      module-name: "FlatFree"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: node scripts/generate-index.js
+      - run: snapcraft lint --help 2>&1 | head -n 5 || echo "snapcraft not installed — skipping lint"

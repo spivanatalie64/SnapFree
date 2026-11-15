@@ -1,111 +1,129 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SnapFree — Free Snap Store</title>
-<meta name="description" content="SnapFree — community Snap store, free and open. Browse snaps without Canonical's gatekeeping.">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-framework@4.15.0/build/css/vanilla.min.css">
-<style>
-:root{--color-brand:#E95420;--color-brand-dark:#BB3E12}
-.p-navigation--sliding.is-dark{background:#000}
-.snap-card{border:1px solid #ddd;border-radius:8px;padding:1rem;text-align:center;transition:box-shadow .15s}
-.snap-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.12)}
-.snap-card img{width:64px;height:64px}
-.snap-search{max-width:600px;margin:2rem auto}
-.category-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1rem}
-.category-card{background:#f7f7f7;border-radius:8px;padding:1.2rem;text-align:center;font-weight:600}
-.hero{background:linear-gradient(135deg,#772953 0%, #E95420 100%);color:#fff;padding:3rem 0}
-.hero h1{color:#fff}
-.snapfree-badge{background:#0e8420;color:#fff;border-radius:4px;padding:2px 6px;font-size:.7rem;vertical-align:middle}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnapFree — The Free Snap Store</title>
+  <meta name="description" content="SnapFree is a community Snap repository — free, open, and built for everyone. The alternative to Flathub's exclusionary policies.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://snapfree.acreetionos.org/">
+  <meta property="og:title" content="SnapFree — The Free Snap Store">
+  <meta property="og:description" content="A community Snap repository — free, open, and built for everyone.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://snapfree.acreetionos.org/">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💜</text></svg>">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <script src="search.js" defer></script>
+  <script src="appstore.js" defer></script>
 </head>
 <body>
-<header class="p-navigation--sliding is-dark">
- <div class="p-navigation__row--25-75">
-  <div class="p-navigation__banner">
-   <div class="p-navigation__tagged-logo">
-    <a class="p-navigation__link" href="/">
-     <div class="p-navigation__logo-tag"><span style="font-size:1.4rem">📦</span></div>
-     <span class="p-navigation__logo-title">SnapFree <span class="snapfree-badge">FREE</span></span>
-    </a>
-   </div>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="page-wrap">
+    <div id="page-scale">
+      <header class="page-header">
+        <div class="header-content">
+          <a href="index.html" class="logo">
+            <div class="logo-img">SF</div>
+            <span class="logo-text">Flat<span>Free</span></span>
+          </a>
+          <div class="nav-search"><input type="text" class="nav-search-input" placeholder="Search apps..." id="navSearch"></div>
+        </div>
+      </header>
+      <div class="hero-header">
+        <h1>📦 SnapFree</h1>
+        <p class="subtitle">Install Linux apps with the free Snap store — no gatekeeping, no proprietary server.</p>
+      </div>
+      <div class="page-wrapper">
+        <main id="main-content" class="content-feed">
+          <article class="content-box">
+            <div class="box-header">
+              <h1><i class="bi bi-box"></i> Available Applications</h1>
+            </div>
+            <div class="box-body">
+              <p style="color: var(--acreetion-text-muted); font-size: 0.9rem; margin-bottom: 20px;">All apps in the SnapFree repository — built from public source, free for everyone.</p>
+              <div id="appGrid" class="appstore-grid"></div>
+              <p style="text-align: center; margin-top: 16px;">
+                <a href="apps.html" class="btn btn-lg">Browse All Applications &rarr;</a>
+              </p>
+            </div>
+          </article>
+
+          <article class="content-box">
+            <div class="box-header"><h2><i class="bi bi-grid"></i> Categories</h2></div>
+            <div class="box-body"><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:0.75rem">
+              <a class="btn" href="apps.html?cat=development">🛠️ Development</a>
+              <a class="btn" href="apps.html?cat=games">🎮 Games</a>
+              <a class="btn" href="apps.html?cat=social">💬 Social</a>
+              <a class="btn" href="apps.html?cat=productivity">📋 Productivity</a>
+              <a class="btn" href="apps.html?cat=utilities">🔧 Utilities</a>
+              <a class="btn" href="apps.html?cat=art">🎨 Art</a>
+              <a class="btn" href="apps.html?cat=server">🖥️ Server</a>
+              <a class="btn" href="apps.html?cat=devices">📱 IoT</a>
+            </div></div>
+          </article>
+          <article class="content-box">
+            <div class="box-header">
+              <h2><i class="bi bi-shield-exclamation"></i> Why SnapFree?</h2>
+            </div>
+            <div class="box-body">
+              <p>SnapFree exists because the established gatekeepers have forgotten what open source is supposed to be. We do not believe in rejecting software because of who wrote it or how it was made.</p>
+              <h3>On AI-Generated Submissions</h3>
+              <p><strong>SnapFree fully accepts and welcomes submissions that use AI assistance.</strong> If a tool helps a developer build better software faster, we see that as a <em>good thing</em>. We do not police how code is written — we care about whether it works, whether it's useful, and whether it respects user freedom.</p>
+              <h3>Flathub's Guidelines Are Exclusionary</h3>
+              <p>Flathub, the dominant Snap repository, has adopted submission guidelines that ban applications "generated predominantly by AI with minimal human involvement."</p>
+              <blockquote>
+                "The Snap Store is the only store supported by snapd — third-party stores are not officially supported."
+                <footer>— <cite>Canonical Snap Store</cite></footer>
+              </blockquote>
+              <ul>
+                <li><strong>It is unenforceable.</strong> There is no tool that can reliably determine how much AI assistance was used.</li>
+                <li><strong>It is fundamentally anti-competitive.</strong> The rule exists to keep out new developers AI empowers.</li>
+                <li><strong>It punishes transparency.</strong> Developers who openly credit AI tools are rejected.</li>
+              </ul>
+              <p>At SnapFree, we believe <strong>any tool used by a human is human work.</strong></p>
+            </div>
+          </article>
+          <article class="content-box">
+            <div class="box-header">
+              <h2><i class="bi bi-shield-lock"></i> Gatekeeping is Not Freedom</h2>
+            </div>
+            <div class="box-body">
+              <p><strong>Corporate greed has destroyed what open source was supposed to be.</strong> SnapFree is the alternative. No review board. No corporate board. No hidden criteria. If it builds and passes a malware scan, it's in.</p>
+            </div>
+          </article>
+          <article class="content-box">
+            <div class="box-header">
+              <h2><i class="bi bi-cloud-upload"></i> Submit an Application</h2>
+            </div>
+            <div class="box-body">
+              <p>We accept submissions from everyone — humans, AI-assisted developers, teams, bots, whatever builds free software.</p>
+              <p>To submit, open a pull request on our <a href="https://github.com/spivanatalie64/SnapFree" style="color:var(--acreetion-purple)">GitHub repository</a> adding a directory with your app ID and a snap-builder manifest.</p>
+            </div>
+          </article>
+          <article class="content-box">
+            <div class="box-header">
+              <h2><i class="bi bi-terminal"></i> Getting Started</h2>
+            </div>
+            <div class="box-body">
+              <p><strong>Quick install (auto-configures GPG):</strong></p>
+              <pre><code>curl -fsSL https://snapfree.acreetionos.org/install.sh | bash</code></pre>
+              <p style="color:var(--acreetion-text-muted);font-size:0.85rem">Or manually:</p>
+              <pre><code>snap remote-add --if-not-exists snapfree https://snapfree.acreetionos.org/snapfree.snaprepo</code></pre>
+              <p>Then install an app:</p>
+              <pre><code>snap install snapfree app.authpass.AuthPass</code></pre>
+              <p style="color:var(--acreetion-text-muted);font-size:0.78rem">If you see <code>Can't check signature: public key not found</code>, run: <code>curl -fsSL https://snapfree.acreetionos.org/install.sh | bash</code> — it auto-fixes GPG.</p>
+            </div>
+          </article>
+        </main>
+      </div>
+      <footer class="page-footer">
+        <p>SnapFree is not affiliated with Canonical or the Snapcraft project.</p>
+        <p><a href="https://github.com/spivanatalie64/SnapFree">GitHub</a> &middot; <a href="https://snapfree.pages.dev">snapfree.pages.dev</a> &middot; <a href="https://snapfree.acreetionos.org">snapfree.acreetionos.org</a></p>
+        <p>Maintained by Natalie, with Love <span class="footer-love">&hearts;</span></p>
+      </footer>
+    </div>
   </div>
-  <nav class="p-navigation__nav"><ul class="p-navigation__items">
-   <li class="p-navigation__item is-selected"><a class="p-navigation__link" href="/">Store</a></li>
-   <li class="p-navigation__item"><a class="p-navigation__link" href="https://github.com/spivanatalie64/SnapFree">Contribute</a></li>
-   <li class="p-navigation__item"><a class="p-navigation__link" href="#why">Why SnapFree?</a></li>
-  </ul></nav>
- </div>
-</header>
-
-<section class="hero">
- <div class="row">
-  <div class="col-8">
-   <h1>Install Linux apps with SnapFree</h1>
-   <p class="p-heading--4" style="color:#fff;opacity:.9">The free Snap store — no gatekeeping, no proprietary server, AI welcome. <br> <code style="background:rgba(0,0,0,.3);padding:2px 6px;border-radius:4px">curl -fsSL https://snapfree.acreetionos.org/install.sh | bash</code></p>
-   <div class="snap-search">
-    <form onsubmit="event.preventDefault();location.href='apps.html?q='+encodeURIComponent(this.q.value)">
-     <div class="p-search-box">
-      <input type="search" name="q" class="p-search-box__input" placeholder="Search snaps — e.g. mediawriter, terminal" autocomplete="off">
-      <button type="submit" class="p-search-box__button"><i class="p-icon--search"></i></button>
-     </div>
-    </form>
-   </div>
-  </div>
-  <div class="col-4 u-hide--small" style="font-size:120px;text-align:center;opacity:.3">📦</div>
- </div>
-</section>
-
-<section class="p-strip">
- <div class="row"><div class="col-12"><h2>Featured snaps</h2><p class="p-muted-heading">Curated from SnapFree — free and open for everyone</p></div></div>
- <div class="row" id="featured"></div>
-</section>
-
-<section class="p-strip--light">
- <div class="row"><div class="col-12"><h2>Categories</h2></div></div>
- <div class="row"><div class="col-12 category-grid">
-  <a class="category-card" href="apps.html?cat=development">🛠️ Development</a>
-  <a class="category-card" href="apps.html?cat=games">🎮 Games</a>
-  <a class="category-card" href="apps.html?cat=social">💬 Social</a>
-  <a class="category-card" href="apps.html?cat=productivity">📋 Productivity</a>
-  <a class="category-card" href="apps.html?cat=utilities">🔧 Utilities</a>
-  <a class="category-card" href="apps.html?cat=art">🎨 Art & Design</a>
-  <a class="category-card" href="apps.html?cat=server">🖥️ Server</a>
-  <a class="category-card" href="apps.html?cat=devices">📱 Devices & IoT</a>
- </div></div>
-</section>
-
-<section class="p-strip" id="why">
- <div class="row">
-  <div class="col-8">
-   <h2>Why SnapFree?</h2>
-   <p>Canonical's Snap Store is closed-source server-side and centrally controlled. SnapFree is the community alternative — like <a href="https://flatfree.acreetionos.org">FlatFree</a> for Flatpaks.</p>
-   <ul class="p-list">
-    <li class="p-list__item is-ticked">Open index — every snap listed in <code>repo/index.json</code> with hash</li>
-    <li class="p-list__item is-ticked">No gatekeeping — if it builds with <code>snapcraft</code> and is free software, it's in</li>
-    <li class="p-list__item is-ticked">AI welcome — any tool used by a human is human work</li>
-    <li class="p-list__item is-ticked">Install without a store: <code>sudo snap install --dangerous *.snap</code></li>
-   </ul>
-  </div>
-  <div class="col-4"><div class="p-card"><h3>Submit a snap</h3><p>PR a <code>snapcraft.yaml</code> to <a href="https://github.com/spivanatalie64/SnapFree">GitHub</a>. No review board.</p><a class="p-button--positive" href="https://github.com/spivanatalie64/SnapFree">Contribute</a></div></div>
- </div>
-</section>
-
-<footer class="p-strip--light"><div class="row"><div class="col-12"><p class="u-no-margin--bottom"><small>SnapFree is not affiliated with Canonical or Snapcraft. <a href="https://github.com/spivanatalie64/SnapFree">GitHub</a> · <a href="https://snapfree-8mz.pages.dev">snapfree.pages.dev</a> · Maintained by Natalie 💜</small></p></div></div></footer>
-<script>
-fetch('search.json').then(r=>r.json()).then(snaps=>{
- const icons={ 'acreetion-media-writer':'💾', 'cinnamon-terminal':'🖥️' };
- const el=document.getElementById('featured');
- el.innerHTML=snaps.map(s=>`
-  <div class="col-3"><a href="app.html?id=${s.id}" style="text-decoration:none;color:inherit">
-   <div class="snap-card">
-    <div style="font-size:48px">${icons[s.id]||'📦'}</div>
-    <h3 class="p-heading--4">${s.name}</h3>
-    <p class="u-no-margin--bottom"><small>${s.description}</small></p>
-    <p><span class="p-chip">v${s.version}</span> <span class="p-chip--positive">FOSS</span></p>
-    <span class="p-button--positive u-no-margin--bottom">View</span>
-   </div></a></div>`).join('');
-});
-</script>
+  <script src="common.js"></script>
 </body>
 </html>

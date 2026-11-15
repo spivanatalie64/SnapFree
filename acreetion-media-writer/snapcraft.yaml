@@ -1,0 +1,25 @@
+name: acreetion-media-writer
+title: AcreetionOS Media Writer
+summary: Write OS images to USB drives
+description: |
+  AcreetionOS Media Writer — write ISOs to USB drives with verification.
+  Port of Fedora Media Writer for AcreetionOS.
+base: core24
+version: "5.3.1"
+grade: stable
+confinement: strict
+architectures:
+  - build-on: amd64
+    build-for: amd64
+
+apps:
+  acreetion-media-writer:
+    command: bin/mediawriter
+    desktop: usr/share/applications/acreetion-media-writer.desktop
+    plugs: [home, removable-media, raw-usb, network, desktop]
+
+parts:
+  mediawriter:
+    plugin: cmake
+    source: https://gitlab.acreetionos.org/natalie/AcreetionMediaWriter.git
+    source-tag: v5.3.1

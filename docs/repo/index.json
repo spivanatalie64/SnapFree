@@ -1,0 +1,16 @@
+{
+  "snaps": [
+    {
+      "name": "acreetion-media-writer",
+      "version": "5.3.1",
+      "summary": "Write OS images to USB drives",
+      "snap": "repo/snaps/acreetion-media-writer_5.3.1_amd64.snap"
+    },
+    {
+      "name": "cinnamon-terminal",
+      "version": "1.0.0",
+      "summary": "GNOME Terminal fork for Cinnamon",
+      "snap": "repo/snaps/cinnamon-terminal_1.0.0_amd64.snap"
+    }
+  ]
+}

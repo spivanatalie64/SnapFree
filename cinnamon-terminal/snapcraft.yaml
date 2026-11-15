@@ -1,0 +1,16 @@
+name: cinnamon-terminal
+title: Cinnamon Terminal
+summary: GNOME Terminal fork for Cinnamon
+description: Terminal for the Cinnamon desktop environment.
+base: core24
+version: "1.0.0"
+grade: stable
+confinement: strict
+apps:
+  cinnamon-terminal:
+    command: usr/bin/cinnamon-terminal
+    plugs: [home, network, desktop]
+parts:
+  terminal:
+    plugin: meson
+    source: https://github.com/linuxmint/cinnamon-terminal.git

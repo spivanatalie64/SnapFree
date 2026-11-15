@@ -1,0 +1,5 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>SnapFree — The Free Snap Store</title><link rel="stylesheet" href="style.css"></head>
+<body><h1>SnapFree 💜</h1><p>Community Snap repository — free, open, for everyone. The snap equivalent of FlatFree.</p>
+<p><code>curl -fsSL https://snapfree.acreetionos.org/install.sh | bash</code></p>
+<div id="apps"></div><script>fetch('search.json').then(r=>r.json()).then(a=>{document.getElementById('apps').innerHTML=a.map(s=>`<div><b>${s.name}</b> ${s.version} — ${s.summary}</div>`).join('')})</script>
+</body></html>

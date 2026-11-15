@@ -1,0 +1,69 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install flatpak toolchain
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq flatpak ostree
+
+      - name: Import GPG signing key
+        run: |
+          echo "${{ secrets.GPG_PRIVATE_KEY }}" | base64 -d | gpg --batch --import
+          echo "GPG_KEY_ID=${{ secrets.GPG_KEY_ID }}" >> "$GITHUB_ENV"
+
+      - name: Generate search index
+        run: node scripts/generate-index.js
+
+      - name: Sign repository and update appstream
+        run: |
+          flatpak build-update-repo \
+            --gpg-sign="${{ env.GPG_KEY_ID }}" \
+            --generate-static-deltas \
+            --prune \
+            docs/repo || true
+
+      - name: Export public GPG key and update flatpakrepo
+        run: |
+          echo "Exporting public GPG key for the .flatpakrepo file..."
+          gpg --export --armor "${{ env.GPG_KEY_ID }}" > /tmp/flatfree-public.gpg
+          # Convert to base64 one-liner for GPGKey field
+          GPG_B64=$(base64 -w0 /tmp/flatfree-public.gpg)
+          # Update the flatfree.flatpakrepo with the correct public key
+          awk -v key="$GPG_B64" '
+            /^GPGKey=/ { print "GPGKey=" key; next }
+            { print }
+          ' docs/flatfree.flatpakrepo > /tmp/flatfree.flatpakrepo.new
+          mv /tmp/flatfree.flatpakrepo.new docs/flatfree.flatpakrepo
+          echo "Updated flatfree.flatpakrepo with current signing key"
+          # Also save as standalone .gpg file for manual imports
+          cp /tmp/flatfree-public.gpg docs/flatfree.gpg
+          echo "Exported docs/flatfree.gpg"
+
+      - name: Commit and push signed repo (automate GPG sync for Vercel)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/repo docs/flatfree.flatpakrepo docs/flatfree.gpg docs/search.json || true
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: auto-update signed repo and GPG key [skip ci]"
+            git push origin HEAD:main
+          fi
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: 6a46b418508c26278ae2d3373f41da81
+          command: pages deploy docs --project-name flatfree --branch main
+

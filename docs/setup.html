@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnapFree — Setup Guide</title>
+  <meta name="description" content="Setup guide for SnapFree, the community Snap repository.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💜</text></svg>">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <script src="search.js" defer></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="page-wrap">
+    <div id="page-scale">
+      <header class="page-header">
+        <div class="header-content">
+          <a href="index.html" class="logo">
+            <div class="logo-img">SF</div>
+            <span class="logo-text">Flat<span>Free</span></span>
+          </a>
+          <div class="nav-search"><input type="text" class="nav-search-input" placeholder="Search apps..." id="navSearch"></div>
+        </div>
+      </header>
+      <div class="hero-header">
+        <h1>Setup Guide</h1>
+        <p class="subtitle">Get SnapFree running on your system</p>
+      </div>
+      <div class="page-wrapper">
+        <main id="main-content" class="content-feed">
+          <article class="content-box">
+            <div class="box-header">
+              <h2><i class="bi bi-gear"></i> Setting Up SnapFree</h2>
+            </div>
+            <div class="box-body">
+              <p>Follow these steps to start using SnapFree on your Linux system.</p>
+              <div class="setup-card">
+                <h3>1. Ensure Snap is Installed</h3>
+                <p>Most Linux distributions include Snap. Install it if needed:</p>
+                <pre><code># Debian/Ubuntu
+sudo apt install snap
+
+# Fedora
+sudo dnf install snap
+
+# Arch Linux
+sudo pacman -S snap
+
+# openSUSE
+sudo zypper install snap</code></pre>
+              </div>
+              <div class="setup-card">
+                <h3>2. Add the SnapFree Remote</h3>
+                <pre><code>snap remote-add --if-not-exists snapfree https://snapfree.acreetionos.org/snapfree.snaprepo</code></pre>
+              </div>
+              <div class="setup-card">
+                <h3>3. Install an Application</h3>
+                <pre><code>snap install snapfree org.acreetionos.MediaWriter</code></pre>
+              </div>
+              <div class="setup-card">
+                <h3>4. Run the Application</h3>
+                <pre><code>snap run org.acreetionos.MediaWriter</code></pre>
+                <p>Or launch it from your desktop's application menu.</p>
+              </div>
+              <div class="setup-card">
+                <h3>5. Keep Apps Updated</h3>
+                <pre><code>snap update</code></pre>
+              </div>
+            </div>
+          </article>
+        </main>
+      </div>
+      <footer class="page-footer">
+        <p>SnapFree is not affiliated with Snap Store or the Snap project.</p>
+        <p><a href="https://github.com/spivanatalie64/SnapFree">GitHub</a> &middot; <a href="https://snapfree.pages.dev">snapfree.pages.dev</a> &middot; <a href="https://snapfree.acreetionos.org">snapfree.acreetionos.org</a></p>
+        <p>Maintained by Natalie, with Love <span class="footer-love">&hearts;</span></p>
+      </footer>
+    </div>
+  </div>
+  <script src="common.js"></script>
+</body>
+</html>

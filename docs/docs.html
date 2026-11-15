@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnapFree — Documentation</title>
+  <meta name="description" content="Documentation and guides for SnapFree, the community Snap repository.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💜</text></svg>">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <script src="search.js" defer></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="page-wrap">
+    <div id="page-scale">
+      <header class="page-header">
+        <div class="header-content">
+          <a href="index.html" class="logo">
+            <div class="logo-img">SF</div>
+            <span class="logo-text">Flat<span>Free</span></span>
+          </a>
+          <div class="nav-search"><input type="text" class="nav-search-input" placeholder="Search apps..." id="navSearch"></div>
+        </div>
+      </header>
+      <div class="hero-header">
+        <h1>Documentation</h1>
+        <p class="subtitle">Guides and references for SnapFree</p>
+      </div>
+      <div class="page-wrapper">
+        <main id="main-content" class="content-feed">
+          <article class="content-box">
+            <div class="box-header">
+              <h2><i class="bi bi-book"></i> Getting Started with SnapFree</h2>
+            </div>
+            <div class="box-body">
+              <p>SnapFree is a community-maintained Snap repository. This documentation will help you get started with using and contributing to SnapFree.</p>
+              <h3>What is Snap?</h3>
+              <p>Snap is a next-generation packaging format for Linux desktop applications. It provides sandboxing, cross-distribution compatibility, and automatic updates. SnapFree provides a repository of Snap applications that are free and open source.</p>
+              <h3>Adding the SnapFree Repository</h3>
+              <pre><code>snap remote-add --if-not-exists snapfree https://snapfree.acreetionos.org/snapfree.snaprepo</code></pre>
+              <h3>Installing Applications</h3>
+              <pre><code>snap install snapfree org.acreetionos.MediaWriter</code></pre>
+              <h3>Running Applications</h3>
+              <pre><code>snap run org.acreetionos.MediaWriter</code></pre>
+              <h3>Listing Available Applications</h3>
+              <pre><code>snap remote-ls snapfree</code></pre>
+              <h3>Updating Applications</h3>
+              <pre><code>snap update</code></pre>
+            </div>
+          </article>
+          <article class="content-box">
+            <div class="box-header">
+              <h2><i class="bi bi-code-square"></i> Creating a Snap Manifest</h2>
+            </div>
+            <div class="box-body">
+              <p>To submit an application to SnapFree, you need a snap-builder manifest. Here is a basic example:</p>
+              <pre><code>{
+  "id": "org.example.App",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "46",
+  "sdk": "org.gnome.Sdk",
+  "command": "myapp",
+  "finish-args": [
+    "--share=ipc",
+    "--socket=x11"
+  ],
+  "modules": [
+    {
+      "name": "myapp",
+      "buildsystem": "meson",
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/example/myapp.git"
+        }
+      ]
+    }
+  ]
+}</code></pre>
+              <p>Place this manifest in a directory named after your app ID (e.g., <code>org.example.App/org.example.App.json</code>) and submit a pull request.</p>
+            </div>
+          </article>
+        </main>
+      </div>
+      <footer class="page-footer">
+        <p>SnapFree is not affiliated with Snap Store or the Snap project.</p>
+        <p><a href="https://github.com/spivanatalie64/SnapFree">GitHub</a> &middot; <a href="https://snapfree.pages.dev">snapfree.pages.dev</a> &middot; <a href="https://snapfree.acreetionos.org">snapfree.acreetionos.org</a></p>
+        <p>Maintained by Natalie, with Love <span class="footer-love">&hearts;</span></p>
+      </footer>
+    </div>
+  </div>
+  <script src="common.js"></script>
+</body>
+</html>

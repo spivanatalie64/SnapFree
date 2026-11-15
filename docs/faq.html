@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnapFree — FAQ</title>
+  <meta name="description" content="Frequently asked questions about SnapFree, the community Snap repository.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💜</text></svg>">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <script src="search.js" defer></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="page-wrap">
+    <div id="page-scale">
+      <header class="page-header">
+        <div class="header-content">
+          <a href="index.html" class="logo">
+            <div class="logo-img">SF</div>
+            <span class="logo-text">Flat<span>Free</span></span>
+          </a>
+          <div class="nav-search"><input type="text" class="nav-search-input" placeholder="Search apps..." id="navSearch"></div>
+        </div>
+      </header>
+      <div class="hero-header">
+        <h1>Frequently Asked Questions</h1>
+        <p class="subtitle">Everything you need to know about SnapFree</p>
+      </div>
+      <div class="page-wrapper">
+        <main id="main-content" class="content-feed">
+          <div class="faq-list">
+            <div class="faq-item">
+              <div class="faq-question">What is SnapFree?</div>
+              <div class="faq-answer" style="display:none"><p>SnapFree is a community-maintained Snap repository that accepts all free and open source software, regardless of how it was created. We are the alternative to Snap Store's exclusionary policies regarding AI-assisted development.</p></div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">How is SnapFree different from Snap Store?</div>
+              <div class="faq-answer" style="display:none"><p>Snap Store bans applications "generated predominantly by AI." SnapFree welcomes them. We believe that any tool used by a human is human work, and we do not police how code is written. If it builds, if it's free software — it belongs here.</p></div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">How do I install apps from SnapFree?</div>
+              <div class="faq-answer" style="display:none"><p>First add the remote: <code>snap remote-add --if-not-exists snapfree https://snapfree.acreetionos.org/snapfree.snaprepo</code>. Then install: <code>snap install snapfree &lt;app-id&gt;</code>.</p></div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">How do I submit an application?</div>
+              <div class="faq-answer" style="display:none"><p>Open a pull request on our GitHub repository adding a directory with your app ID and a snap-builder manifest. Our CI validates the manifest, builds the app, and runs a malware scan. If it passes, it's in — no human reviewers needed.</p></div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">Can I submit apps created with AI assistance?</div>
+              <div class="faq-answer" style="display:none"><p>Absolutely. SnapFree fully accepts and welcomes submissions that use AI assistance. We do not believe in rejecting software because of who wrote it or how it was made. All free software is welcome here.</p></div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">Is SnapFree affiliated with Snap Store or the Snap project?</div>
+              <div class="faq-answer" style="display:none"><p>No. SnapFree is an independent community project. We are not affiliated with Snap Store, the Snap project, or any corporation. We are simply people who believe in free software without gatekeeping.</p></div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">What license do my apps need to be?</div>
+              <div class="faq-answer" style="display:none"><p>All applications must be free and open source software. We accept any OSI-approved open source license. Proprietary software is not accepted.</p></div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">Who maintains SnapFree?</div>
+              <div class="faq-answer" style="display:none"><p>SnapFree is maintained by <a href="https://natalie.acreetionos.org" style="color:var(--acreetion-purple)">Natalie Cole-Clift Spiva</a> with contributions from the community. We are independent developers who believe in free software for everyone.</p></div>
+            </div>
+          </div>
+        </main>
+      </div>
+      <footer class="page-footer">
+        <p>SnapFree is not affiliated with Snap Store or the Snap project.</p>
+        <p><a href="https://github.com/spivanatalie64/SnapFree">GitHub</a> &middot; <a href="https://snapfree.pages.dev">snapfree.pages.dev</a> &middot; <a href="https://snapfree.acreetionos.org">snapfree.acreetionos.org</a></p>
+        <p>Maintained by Natalie, with Love <span class="footer-love">&hearts;</span></p>
+      </footer>
+    </div>
+  </div>
+  <script src="common.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.faq-question').forEach(function(q) {
+      q.addEventListener('click', function() {
+        this.classList.toggle('open');
+        var answer = this.nextElementSibling;
+        if (answer.style.display === 'none' || !answer.style.display) {
+          answer.style.display = 'block';
+        } else {
+          answer.style.display = 'none';
+        }
+      });
+    });
+  });
+  </script>
+</body>
+</html>

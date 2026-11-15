@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnapFree — App Details</title>
+  <meta name="description" content="SnapFree Flatpak application details.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💜</text></svg>">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <script src="search.js" defer></script>
+  <style>
+    .app-detail-loading { text-align: center; padding: 80px 24px; }
+    .app-detail-loading .spinner { margin-bottom: 16px; }
+    .app-detail-loading p { color: var(--acreetion-text-muted); }
+    .app-detail-error { text-align: center; padding: 80px 24px; }
+    .app-detail-error h2 { color: var(--acreetion-text-bright); margin-bottom: 8px; }
+    .app-detail-error p { color: var(--acreetion-text-muted); margin-bottom: 16px; }
+    .btn-install { position: relative; min-width: 140px; justify-content: center; }
+    .btn-install:disabled { opacity: 0.7; cursor: wait; }
+    .btn-copy:hover { background: var(--acreetion-box-bg) !important; color: var(--acreetion-text-bright) !important; border-color: var(--acreetion-purple-border) !important; }
+    .btn-copy:active { transform: scale(0.95); }
+    .install-info .code-block { transition: border-color 0.2s; }
+    .install-info .code-block:hover { border-color: var(--acreetion-purple-border); }
+    /* Modal overlay */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 10000; display: flex; align-items: center; justify-content: center; animation: fadeIn 0.2s ease; }
+    .modal-box { background: var(--acreetion-panel-bg); border: 1px solid var(--acreetion-box-border); border-radius: 16px; max-width: 480px; width: 90%; padding: 32px; box-shadow: 0 24px 64px rgba(0,0,0,0.5); animation: slideUp 0.25s ease; }
+    .modal-icon { font-size: 2.5rem; text-align: center; margin-bottom: 16px; }
+    .modal-box h3 { font-size: 1.2rem; color: var(--acreetion-text-bright); text-align: center; margin-bottom: 8px; }
+    .modal-box p { font-size: 0.9rem; color: var(--acreetion-text-muted); text-align: center; margin-bottom: 24px; line-height: 1.5; }
+    .modal-actions { display: flex; gap: 12px; flex-direction: column; }
+    .modal-actions .btn { width: 100%; text-align: center; justify-content: center; padding: 14px; font-size: 1rem; }
+    .modal-actions .btn-outline { background: transparent; }
+    .modal-actions .btn-outline:hover { background: var(--acreetion-panel-bg); }
+    .modal-copied { text-align: center; padding: 16px; }
+    .modal-copied .check-icon { font-size: 3rem; color: var(--acreetion-purple); margin-bottom: 12px; }
+    .modal-copied h3 { color: var(--acreetion-purple); }
+    .modal-copied p { margin-bottom: 16px; }
+    .modal-copied pre { background: var(--acreetion-box-bg); border: 1px solid var(--acreetion-box-border); border-radius: 8px; padding: 12px; margin: 8px 0; text-align: left; font-size: 0.78rem; font-family: var(--font-mono); color: var(--acreetion-text-bright); overflow-x: auto; }
+    .troubleshoot-btn { background: transparent; border: 1px dashed var(--acreetion-purple-border); color: var(--acreetion-text-muted); padding: 10px; border-radius: 8px; cursor: pointer; font-size: 0.82rem; width: 100%; margin-top: 8px; transition: all 0.2s; }
+    .troubleshoot-btn:hover { border-color: var(--acreetion-purple); color: var(--acreetion-purple); background: var(--acreetion-purple-dim); }
+    .troubleshoot-content { display: none; margin-top: 12px; padding: 16px; background: var(--acreetion-box-bg); border-radius: 8px; border: 1px solid var(--acreetion-box-border); text-align: left; }
+    .troubleshoot-content.visible { display: block; }
+    .troubleshoot-content h4 { font-size: 0.9rem; color: var(--acreetion-text-bright); margin-bottom: 8px; }
+    .troubleshoot-content p { font-size: 0.8rem; color: var(--acreetion-text-muted); margin-bottom: 8px; text-align: left; }
+    .troubleshoot-content pre { font-size: 0.75rem; margin: 6px 0; }
+    .gpg-fix-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--acreetion-purple); color: #000; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.82rem; font-weight: 600; margin-top: 8px; }
+    .gpg-fix-btn:hover { background: var(--acreetion-purple-hover); }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="page-wrap">
+    <div id="page-scale">
+      <header class="page-header">
+        <div class="header-content">
+          <a href="index.html" class="logo">
+            <div class="logo-img">SF</div>
+            <span class="logo-text">Flat<span>Free</span></span>
+          </a>
+          <div class="nav-search"><input type="text" class="nav-search-input" placeholder="Search apps..." id="navSearch"></div>
+        </div>
+      </header>
+      <div class="hero-header" id="heroHeader">
+        <h1 id="appTitle">SnapFree</h1>
+        <p class="subtitle" id="appSubtitle">Application details</p>
+      </div>
+      <div class="page-wrapper">
+        <main id="main-content" class="content-feed">
+          <div id="appContent" class="app-detail">
+            <div class="app-detail-loading">
+              <div class="spinner"></div>
+              <p>Loading application details...</p>
+            </div>
+          </div>
+        </main>
+      </div>
+      <footer class="page-footer">
+        <p>SnapFree is not affiliated with Flathub or the Flatpak project.</p>
+        <p><a href="https://github.com/spivanatalie64/SnapFree">GitHub</a> &middot; <a href="https://snapfree.pages.dev">snapfree.pages.dev</a> &middot; <a href="https://snapfree.acreetionos.org">snapfree.acreetionos.org</a></p>
+        <p>Maintained by Natalie, with Love <span class="footer-love">&hearts;</span></p>
+      </footer>
+    </div>
+  </div>
+  <script src="common.js"></script>
+  <script>
+  (function(){
+    var appData = null;
+
+    function tryFlatpakProtocol(appId) {
+      // Try the flatpak:// URI scheme
+      var flatpakUri = 'flatpak://install?repo=snapfree&app=' + encodeURIComponent(appId);
+      var fallbackUri = 'flatpak:install?repo=snapfree&app=' + encodeURIComponent(appId);
+
+      // Try standard flatpak:// first
+      var iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = flatpakUri;
+      document.body.appendChild(iframe);
+
+      // Also try navigating a hidden link
+      var link = document.createElement('a');
+      link.href = flatpakUri;
+      link.style.display = 'none';
+      document.body.appendChild(link);
+
+      // Try multiple approaches
+      setTimeout(function() {
+        try { window.location.href = flatpakUri; } catch(e) {}
+      }, 100);
+
+      setTimeout(function() {
+        try { window.location.href = fallbackUri; } catch(e) {}
+      }, 300);
+
+      // Clean up after attempt
+      setTimeout(function() {
+        if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+        if (link.parentNode) link.parentNode.removeChild(link);
+      }, 2000);
+    }
+
+    function copyToClipboard(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text);
+      } else {
+        return new Promise(function(resolve, reject) {
+          var ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          try {
+            document.execCommand('copy');
+            resolve();
+          } catch(e) { reject(e); }
+          document.body.removeChild(ta);
+        });
+      }
+    }
+
+    function showModal(appId, appName, remoteCmd, installCmd, runCmd) {
+      // Remove any existing modal
+      var oldModal = document.querySelector('.modal-overlay');
+      if (oldModal) oldModal.parentNode.removeChild(oldModal);
+
+      var overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      overlay.innerHTML =
+        '<div class="modal-box">' +
+          '<div class="modal-icon"><i class="bi bi-terminal" style="color:var(--acreetion-purple)"></i></div>' +
+          '<h3>Flatpak handler not detected</h3>' +
+          '<p>Your system didn\'t respond to the Flatpak protocol.<br>Would you like me to copy the install commands to your clipboard so you can paste them in your terminal?</p>' +
+          '<div class="modal-actions">' +
+            '<button class="btn btn-lg" id="modalYes">Yes, copy commands for me</button>' +
+            '<button class="btn btn-lg btn-outline" id="modalNo">No, I\'ll do it myself</button>' +
+          '</div>' +
+        '</div>';
+      document.body.appendChild(overlay);
+
+      document.getElementById('modalYes').addEventListener('click', function() {
+        var allCommands = remoteCmd + '\n' + installCmd + '\n' + runCmd;
+        copyToClipboard(allCommands).then(function() {
+          overlay.innerHTML =
+            '<div class="modal-box">' +
+              '<div class="modal-copied">' +
+                '<div class="check-icon"><i class="bi bi-check-circle-fill"></i></div>' +
+                '<h3>Commands Copied!</h3>' +
+                '<p>Paste them in your terminal to install ' + escapeHtml(appName) + '</p>' +
+                '<pre># Step 1: Add the remote\n' + escapeHtml(remoteCmd) + '</pre>' +
+                '<pre># Step 2: Install the app\n' + escapeHtml(installCmd) + '</pre>' +
+                '<pre># Step 3: Run it\n' + escapeHtml(runCmd) + '</pre>' +
+                '<button class="troubleshoot-btn" id="modalTroubleshoot"><i class="bi bi-exclamation-triangle"></i> Having issues? GPG signature error? Click here</button>' +
+                '<div class="troubleshoot-content" id="modalTroubleshootContent">' +
+                  '<h4>GPG Signature Error Fix</h4>' +
+                  '<p>If you see <code style="color:var(--acreetion-text-bright)">Can\'t check signature: public key not found</code>, the GPG key needs to be imported manually:</p>' +
+                  '<pre style="background:var(--acreetion-body-bg);border:1px solid var(--acreetion-box-border);border-radius:6px;padding:10px;font-size:0.75rem;font-family:var(--font-mono);color:var(--acreetion-text-bright);overflow-x:auto" id="gpgFixCmd">curl -L https://snapfree.acreetionos.org/snapfree.gpg -o /tmp/snapfree.gpg && flatpak remote-modify --gpg-import=/tmp/snapfree.gpg snapfree && flatpak install snapfree ' + escapeHtml(appId) + '</pre>' +
+                  '<button class="gpg-fix-btn" id="copyGpgFix"><i class="bi bi-clipboard"></i> Copy GPG fix command</button>' +
+                  '<p style="margin-top:8px;font-size:0.75rem">Then run <code style="color:var(--acreetion-text-bright)">flatpak install snapfree ' + escapeHtml(appId) + '</code> again.</p>' +
+                  '<p style="font-size:0.75rem;color:var(--acreetion-text-muted);font-style:italic;margin-top:8px;border-top:1px solid var(--acreetion-box-border);padding-top:8px">We know not everyone knows everything. So we tried to make this as easy as possible for you. <i class="bi bi-heart" style="color:var(--acreetion-purple)"></i></p>' +
+                '</div>' +
+                '<p style="font-size:0.85rem;color:var(--acreetion-text-muted);margin-top:12px">' +
+                  'Open your terminal and paste (Ctrl+Shift+V or Cmd+V).<br>' +
+                  'All three commands will run in sequence.' +
+                '</p>' +
+                '<button class="btn" id="modalDone">Got it</button>' +
+              '</div>' +
+            '</div>';
+          document.getElementById('modalDone').addEventListener('click', function() {
+            if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+            var installSection = document.querySelector('.install-info');
+            if (installSection) {
+              installSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          });
+
+          // Troubleshooting toggle
+          var troubleshootBtn = document.getElementById('modalTroubleshoot');
+          var troubleshootContent = document.getElementById('modalTroubleshootContent');
+          if (troubleshootBtn && troubleshootContent) {
+            troubleshootBtn.addEventListener('click', function() {
+              troubleshootContent.classList.toggle('visible');
+              if (troubleshootContent.classList.contains('visible')) {
+                troubleshootBtn.innerHTML = '<i class="bi bi-chevron-up"></i> Hide troubleshooting';
+              } else {
+                troubleshootBtn.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Having issues? GPG signature error? Click here';
+              }
+            });
+          }
+
+          // GPG fix copy
+          var copyGpgBtn = document.getElementById('copyGpgFix');
+          if (copyGpgBtn) {
+            copyGpgBtn.addEventListener('click', function() {
+              var cmdEl = document.getElementById('gpgFixCmd');
+              var text = cmdEl ? (cmdEl.textContent || cmdEl.innerText) : '';
+              if (text) {
+                copyToClipboard(text).then(function() {
+                  copyGpgBtn.innerHTML = '<i class="bi bi-check"></i> Copied!';
+                  setTimeout(function() { copyGpgBtn.innerHTML = '<i class="bi bi-clipboard"></i> Copy GPG fix command'; }, 2500);
+                }).catch(function() {
+                  copyGpgBtn.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Failed to copy';
+                  setTimeout(function() { copyGpgBtn.innerHTML = '<i class="bi bi-clipboard"></i> Copy GPG fix command'; }, 2000);
+                });
+              }
+            });
+          }
+        }).catch(function() {
+          // Clipboard failed — fall back to showing commands
+          overlay.innerHTML =
+            '<div class="modal-box">' +
+              '<div class="modal-icon"><i class="bi bi-exclamation-triangle" style="color:var(--acreetion-purple)"></i></div>' +
+              '<h3>Could not copy automatically</h3>' +
+              '<p>Please copy the commands manually from the terminal section below.</p>' +
+              '<div class="modal-actions">' +
+                '<button class="btn btn-lg" id="modalOk">Show me the commands</button>' +
+              '</div>' +
+            '</div>';
+          document.getElementById('modalOk').addEventListener('click', function() {
+            if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+            var installSection = document.querySelector('.install-info');
+            if (installSection) {
+              installSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              installSection.style.transition = 'box-shadow 0.3s';
+              installSection.style.boxShadow = '0 0 20px rgba(155,89,182,0.4)';
+              setTimeout(function() { installSection.style.boxShadow = 'none'; }, 2000);
+            }
+          });
+        });
+      });
+
+      document.getElementById('modalNo').addEventListener('click', function() {
+        if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        // Just scroll to the terminal section so they can copy manually
+        var installSection = document.querySelector('.install-info');
+        if (installSection) {
+          installSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          installSection.style.transition = 'box-shadow 0.3s';
+          installSection.style.boxShadow = '0 0 20px rgba(155,89,182,0.4)';
+          setTimeout(function() { installSection.style.boxShadow = 'none'; }, 2000);
+        }
+      });
+
+      // Close on overlay click (but not on modal-box click)
+      overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
+          if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        }
+      });
+    }
+
+    function setupInstallButton() {
+      var btn = document.querySelector('.btn-install');
+      if (!btn) return;
+      var appId = btn.getAttribute('data-appid');
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        btn.disabled = true;
+        btn.innerHTML = 'Opening Flatpak... <span class="spinner" style="width:14px;height:14px;border-width:2px;vertical-align:middle;margin-left:4px"></span>';
+
+        // Get the commands
+        var remoteCmd = 'flatpak remote-add --if-not-exists snapfree https://snapfree.acreetionos.org/snapfree.flatpakrepo';
+        var installCmd = 'flatpak install snapfree ' + appId;
+        var runCmd = 'flatpak run ' + appId;
+        var appName = btn.closest('.app-detail') ? (document.querySelector('.app-detail-meta h2') || {}).textContent || appId : appId;
+
+        // Try flatpak protocol
+        tryFlatpakProtocol(appId);
+
+        // After 2 seconds, if no handler detected, show the modal
+        var handlerTimer = setTimeout(function() {
+          btn.disabled = false;
+          btn.innerHTML = 'Install';
+          showModal(appId, appName, remoteCmd, installCmd, runCmd);
+        }, 2000);
+
+        // If the page loses visibility (user switched to flatpak window), cancel the modal
+        document.addEventListener('visibilitychange', function onVisChange() {
+          if (document.hidden) {
+            clearTimeout(handlerTimer);
+            document.removeEventListener('visibilitychange', onVisChange);
+          }
+        });
+
+        // Also if user clicks elsewhere, let them cancel
+        var cancelTimer = setTimeout(function() {
+          // If they're still on the page after 5 seconds with no response, modal already showed
+        }, 5000);
+      });
+    }
+
+    function setupCopyButtons() {
+      var btns = document.querySelectorAll('.btn-copy');
+      for (var i = 0; i < btns.length; i++) {
+        (function(btn) {
+          btn.addEventListener('click', function() {
+            var targetId = btn.getAttribute('data-target');
+            var codeEl = document.getElementById(targetId);
+            if (!codeEl) return;
+            var text = codeEl.textContent || codeEl.innerText;
+            // Copy to clipboard
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(text).then(function() {
+                btn.innerHTML = '<i class="bi bi-check"></i> Copied!';
+                setTimeout(function() { btn.innerHTML = '<i class="bi bi-clipboard"></i> Copy'; }, 2000);
+              }).catch(function() {
+                fallbackCopy(text, btn);
+              });
+            } else {
+              fallbackCopy(text, btn);
+            }
+          });
+        })(btns[i]);
+      }
+    }
+
+    function setupTroubleshoot() {
+      // Page-level troubleshoot toggle
+      var pageBtn = document.getElementById('pageTroubleshoot');
+      var pageContent = document.getElementById('pageTroubleshootContent');
+      if (pageBtn && pageContent) {
+        pageBtn.addEventListener('click', function() {
+          pageContent.classList.toggle('visible');
+          if (pageContent.classList.contains('visible')) {
+            pageBtn.innerHTML = '<i class="bi bi-chevron-up"></i> Hide troubleshooting';
+          } else {
+            pageBtn.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Getting "public key not found" errors? We got you.';
+          }
+        });
+      }
+    }
+
+    function fallbackCopy(text, btn) {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        btn.innerHTML = '<i class="bi bi-check"></i> Copied!';
+        setTimeout(function() { btn.innerHTML = '<i class="bi bi-clipboard"></i> Copy'; }, 2000);
+      } catch(e) {}
+      document.body.removeChild(ta);
+    }
+
+    function getInitials(name) {
+      return name.split(' ').map(function(w) { return w[0]; }).join('').slice(0, 2).toUpperCase();
+    }
+
+    function getColor(id) {
+      var hash = 0;
+      for (var i = 0; i < id.length; i++) hash = id.charCodeAt(i) + ((hash << 5) - hash);
+      var h = Math.abs(hash) % 360;
+      return 'hsl(' + h + ', 55%, 35%)';
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      var d = document.createElement('div');
+      d.textContent = text;
+      return d.innerHTML;
+    }
+
+    function renderApp(app) {
+      var initials = getInitials(app.name);
+      var color = getColor(app.id);
+      var manifestPath = app.path || (app.id + '/' + app.id + '.json');
+      var manifestUrl = 'https://github.com/spivanatalie64/SnapFree/tree/main/' + manifestPath;
+      var runtimeName = app.runtime || 'Unknown';
+      var runtimeVersion = app.runtimeVersion || '';
+      var license = app.projectLicense || app.license || 'FOSS';
+      var description = app.description || app.name + ' — a SnapFree Flatpak application.';
+
+      document.title = 'SnapFree — ' + app.name;
+      document.querySelector('meta[name="description"]').content = description;
+
+      document.getElementById('appTitle').textContent = app.name;
+      document.getElementById('appSubtitle').textContent = app.id;
+
+      document.getElementById('appContent').innerHTML =
+        '<div class="app-detail-header">' +
+          '<div class="app-detail-icon">' +
+            '<div class="app-icon-placeholder" style="background:' + color + ';color:#fff;font-size:2.5rem;font-weight:800;display:flex;align-items:center;justify-content:center;width:100%;height:100%">' + escapeHtml(initials) + '</div>' +
+          '</div>' +
+          '<div class="app-detail-meta">' +
+            '<h2>' + escapeHtml(app.name) + '</h2>' +
+            '<p class="app-id">' + escapeHtml(app.id) + '</p>' +
+            '<p class="app-version">SnapFree Repository</p>' +
+            '<p class="app-desc" style="font-size: 1rem;">' + escapeHtml(description) + '</p>' +
+            '<div class="app-actions">' +
+              '<button class="btn btn-lg btn-install" data-appid="' + escapeHtml(app.id) + '">Install</button>' +
+              '<a href="' + escapeHtml(manifestUrl) + '" class="btn btn-lg btn-outline" target="_blank" rel="noopener">View Manifest</a>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="app-description">' +
+          '<h3>Description</h3>' +
+          '<p>' + escapeHtml(app.name) + ' is a free and open source Flatpak application available in the SnapFree repository.</p>' +
+          '<p>Runtime: ' + escapeHtml(runtimeName) + ' ' + escapeHtml(runtimeVersion) + '</p>' +
+          '<p>This application is free software and welcomes contributions from all developers regardless of how they build their software.</p>' +
+        '</div>' +
+        '<div class="app-info-table">' +
+          '<h3>Details</h3>' +
+          '<table>' +
+            '<tr><td>App ID</td><td>' + escapeHtml(app.id) + '</td></tr>' +
+            '<tr><td>License</td><td>' + escapeHtml(license) + '</td></tr>' +
+            '<tr><td>Runtime</td><td>' + escapeHtml(runtimeName) + ' ' + escapeHtml(runtimeVersion) + '</td></tr>' +
+            '<tr><td>Branch</td><td>stable</td></tr>' +
+            '<tr><td>Repository</td><td>SnapFree</td></tr>' +
+            '<tr><td>Source</td><td><a href="' + escapeHtml(manifestUrl) + '" style="color:var(--acreetion-purple)" target="_blank" rel="noopener">View Manifest</a></td></tr>' +
+          '</table>' +
+        '</div>' +
+        '<div class="install-info">' +
+          '<h2>Install <span style="font-size:0.7rem;font-weight:400;color:var(--acreetion-text-muted)">via Flatpak</span></h2>' +
+          '<div class="install-protocol-note" style="background:var(--acreetion-purple-dim);border:1px solid var(--acreetion-purple-border);border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:0.85rem">' +
+            '<i class="bi bi-info-circle" style="color:var(--acreetion-purple)"></i> ' +
+            'We know not everyone knows everything. So we tried to make this as easy as possible for you.<br>' +
+            'Clicking <strong>Install</strong> will open your system\'s Flatpak handler. ' +
+            'If nothing happens, we\'ll guide you through it.' +
+          '</div>' +
+          '<p style="font-weight:600;color:var(--acreetion-text-bright)">Step 1 &mdash; Add the SnapFree remote:</p>' +
+          '<pre class="code-block" style="position:relative"><code id="cmdRemote">flatpak remote-add --if-not-exists snapfree https://snapfree.acreetionos.org/snapfree.flatpakrepo</code><button class="btn-copy" data-target="cmdRemote" title="Copy to clipboard" style="position:absolute;top:8px;right:8px;background:var(--acreetion-box-bg);border:1px solid var(--acreetion-box-border);color:var(--acreetion-text);padding:4px 10px;border-radius:4px;cursor:pointer;font-size:0.75rem"><i class="bi bi-clipboard"></i> Copy</button></pre>' +
+          '<p style="font-weight:600;color:var(--acreetion-text-bright)">Step 2 &mdash; Install ' + escapeHtml(app.name) + ':</p>' +
+          '<pre class="code-block" style="position:relative"><code id="cmdInstall">flatpak install snapfree ' + escapeHtml(app.id) + '</code><button class="btn-copy" data-target="cmdInstall" title="Copy to clipboard" style="position:absolute;top:8px;right:8px;background:var(--acreetion-box-bg);border:1px solid var(--acreetion-box-border);color:var(--acreetion-text);padding:4px 10px;border-radius:4px;cursor:pointer;font-size:0.75rem"><i class="bi bi-clipboard"></i> Copy</button></pre>' +
+          '<p style="font-weight:600;color:var(--acreetion-text-bright)">Step 3 &mdash; Run it:</p>' +
+          '<pre class="code-block" style="position:relative"><code id="cmdRun">flatpak run ' + escapeHtml(app.id) + '</code><button class="btn-copy" data-target="cmdRun" title="Copy to clipboard" style="position:absolute;top:8px;right:8px;background:var(--acreetion-box-bg);border:1px solid var(--acreetion-box-border);color:var(--acreetion-text);padding:4px 10px;border-radius:4px;cursor:pointer;font-size:0.75rem"><i class="bi bi-clipboard"></i> Copy</button></pre>' +
+          '<div style="margin-top:24px;padding:16px;background:var(--acreetion-box-bg);border:1px solid var(--acreetion-box-border);border-radius:8px">' +
+            '<button class="troubleshoot-btn" id="pageTroubleshoot" style="border-style:solid"><i class="bi bi-exclamation-triangle"></i> Getting "public key not found" errors? We got you.</button>' +
+            '<div class="troubleshoot-content" id="pageTroubleshootContent">' +
+              '<h4>GPG Signature Error</h4>' +
+              '<p>If you see <code style="color:var(--acreetion-text-bright)">Can\'t check signature: public key not found</code>, the repository\'s GPG signing key needs to be imported. Run this fix:</p>' +
+              '<pre style="background:var(--acreetion-body-bg);border:1px solid var(--acreetion-box-border);border-radius:6px;padding:10px;font-size:0.82rem;font-family:var(--font-mono);color:var(--acreetion-text-bright);overflow-x:auto;position:relative" id="pageGpgFixCmd">curl -L https://snapfree.acreetionos.org/snapfree.gpg -o /tmp/snapfree.gpg && flatpak remote-modify --gpg-import=/tmp/snapfree.gpg snapfree && flatpak install snapfree ' + escapeHtml(app.id) + '</pre>' +
+              '<p style="font-size:0.8rem">This downloads the GPG key, imports it, and retries the install. You only need to do this once.</p>' +
+              '<p style="font-size:0.8rem;color:var(--acreetion-text-muted);margin-top:8px">We know not everyone knows everything. So we tried to make this as easy as possible for you.</p>' +
+              '<p style="font-size:0.8rem;font-style:italic;color:var(--acreetion-text-muted)">SnapFree is a small community project — we\'re here for you. If you keep running into issues, <a href="https://github.com/spivanatalie64/SnapFree/issues" style="color:var(--acreetion-purple)">let us know</a>.</p>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    }
+
+    function showError(msg) {
+      document.getElementById('appContent').innerHTML =
+        '<div class="app-detail-error">' +
+          '<h2>Application Not Found</h2>' +
+          '<p>' + escapeHtml(msg) + '</p>' +
+          '<a href="apps.html" class="btn">Browse Applications</a>' +
+        '</div>';
+    }
+
+    function initApp() {
+      var params = new URLSearchParams(window.location.search);
+      var appId = params.get('id');
+
+      if (!appId) {
+        showError('No application specified. Please select an app from the app store.');
+        return;
+      }
+
+      fetch('search.json')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          var found = null;
+          for (var i = 0; i < data.length; i++) {
+            if (data[i].id === appId) {
+              found = data[i];
+              break;
+            }
+          }
+          if (found) {
+            renderApp(found);
+            setupInstallButton();
+            setupCopyButtons();
+            setupTroubleshoot();
+          } else {
+            showError('Application "' + appId + '" was not found in the SnapFree repository.');
+          }
+        })
+        .catch(function() {
+          showError('Failed to load application data. Please try again later.');
+        });
+    }
+
+    if (document.readyState !== 'loading') initApp();
+    else document.addEventListener('DOMContentLoaded', initApp);
+  })();
+  </script>
+</body>
+</html>

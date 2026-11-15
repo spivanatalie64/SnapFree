@@ -1,14 +1,26 @@
 [
   {
-    "name": "acreetion-media-writer",
-    "version": "5.3.1",
-    "summary": "Write OS images to USB drives",
-    "snap": "repo/snaps/acreetion-media-writer_5.3.1_amd64.snap"
+    "id": "cinnamon-terminal",
+    "name": "Cinnamon Terminal",
+    "description": "GNOME Terminal fork for Cinnamon",
+    "runtime": "core24",
+    "runtimeVersion": "amd64",
+    "confinement": "strict",
+    "version": "1.0.0",
+    "license": "FOSS",
+    "manifest": "snapcraft.yaml",
+    "path": "cinnamon-terminal/snapcraft.yaml"
   },
   {
-    "name": "cinnamon-terminal",
-    "version": "1.0.0",
-    "summary": "GNOME Terminal fork for Cinnamon",
-    "snap": "repo/snaps/cinnamon-terminal_1.0.0_amd64.snap"
+    "id": "acreetion-media-writer",
+    "name": "AcreetionOS Media Writer",
+    "description": "Write OS images to USB drives",
+    "runtime": "core24",
+    "runtimeVersion": "amd64",
+    "confinement": "strict",
+    "version": "5.3.1",
+    "license": "FOSS",
+    "manifest": "snapcraft.yaml",
+    "path": "acreetion-media-writer/snapcraft.yaml"
   }
 ]

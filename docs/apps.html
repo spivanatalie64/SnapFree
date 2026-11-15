@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnapFree — Application Store</title>
+  <meta name="description" content="Browse and search the SnapFree Snap application store. All apps are free and open source.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💜</text></svg>">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <script src="search.js" defer></script>
+  <script src="appstore.js" defer></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <div id="page-wrap">
+    <div id="page-scale">
+      <header class="page-header">
+        <div class="header-content">
+          <a href="index.html" class="logo">
+            <div class="logo-img">SF</div>
+            <span class="logo-text">Flat<span>Free</span></span>
+          </a>
+          <div class="nav-search"><input type="text" class="nav-search-input" placeholder="Search apps..." id="navSearch"></div>
+        </div>
+      </header>
+
+      <div class="hero-header">
+        <h1>Application Store</h1>
+        <p class="subtitle">Browse all available SnapFree applications</p>
+      </div>
+
+      <div class="page-wrapper">
+        <main id="main-content" class="content-feed">
+          <div class="appstore-toolbar">
+            <div class="appstore-search">
+              <input type="text" id="appstoreSearch" placeholder="Search apps by name, ID, or description..." autofocus>
+            </div>
+            <div class="appstore-controls">
+              <span class="appstore-count" id="appCount"></span>
+              <div class="appstore-view-toggle">
+                <button class="view-btn active" data-view="grid" title="Grid view"><i class="bi bi-grid-3x3-gap"></i></button>
+                <button class="view-btn" data-view="list" title="List view"><i class="bi bi-list"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <div id="appGrid" class="appstore-grid"></div>
+          <div id="appStoreFooter" class="appstore-footer"></div>
+        </main>
+      </div>
+
+      <footer class="page-footer">
+        <p>SnapFree is not affiliated with Flathub or the Snap project.</p>
+        <p><a href="https://github.com/spivanatalie64/SnapFree">GitHub</a> &middot; <a href="https://snapfree.pages.dev">snapfree.pages.dev</a> &middot; <a href="https://snapfree.acreetionos.org">snapfree.acreetionos.org</a></p>
+        <p>Maintained by Natalie, with Love <span class="footer-love">&hearts;</span></p>
+      </footer>
+    </div>
+  </div>
+
+  <script src="common.js"></script>
+</body>
+</html>
